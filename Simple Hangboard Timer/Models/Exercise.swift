@@ -10,29 +10,35 @@ import Foundation
 struct Exercise: Identifiable, Codable {
     let id: UUID
     var title: String
-    var durations: [Duration]
-    var repeats: Int
+    var intervals: [Interval]
+    var sets: Int
     var theme: Theme
     var history: [History] = []
     
-    init(id: UUID = UUID(), title: String, durations: [Duration], repeats: Int, theme: Theme, history: [History]) {
+    init(id: UUID = UUID(), title: String, intervals: [Interval], sets: Int, theme: Theme, history: [History]) {
         self.id = id
         self.title = title
-        self.durations = durations
-        self.repeats = repeats
+        self.intervals = intervals
+        self.sets = sets
         self.theme = theme
         self.history = history
     }
 }
 
 extension Exercise {
-    struct Duration: Identifiable, Codable {
+    struct Interval: Identifiable, Codable {
         let id: UUID
-        var duration: Int
+        var hang: Int
+        var rest: Int
+        var repeats: Int
+        var off: Int
         
-        init(id: UUID = UUID(), duration: Int) {
+        init(id: UUID = UUID(), hang: Int, rest: Int, repeats: Int, off: Int) {
             self.id = id
-            self.duration = duration
+            self.hang = hang
+            self.rest = rest
+            self.repeats = repeats
+            self.off = off
         }
     }
 }
@@ -41,14 +47,19 @@ extension Exercise {
     static var sampleData: [Exercise] =
     [
         Exercise(title: "7-3 hang",
-                 durations:[Duration(duration: 7), Duration(duration: 3)],
-                 repeats: 5,
+                 intervals:[Interval(hang: 7, rest: 3, repeats: 5, off: 60)],
+                 sets: 5,
                  theme: .orange,
                  history: []),
         Exercise(title: "10-30 hang",
-                 durations:[Duration(duration: 10), Duration(duration: 30)],
-                 repeats: 3,
-                 theme: .orange,
+                 intervals:[Interval(hang: 10, rest: 30, repeats: 3, off: 120)],
+                 sets: 3,
+                 theme: .tan,
+                 history: []),
+        Exercise(title: "Rehab hang",
+                 intervals:[Interval(hang: 60, rest: 120, repeats: 2, off: 180)],
+                 sets: 5,
+                 theme: .indigo,
                  history: []),
     ]
 }

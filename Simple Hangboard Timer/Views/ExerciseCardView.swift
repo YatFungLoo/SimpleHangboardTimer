@@ -1,5 +1,5 @@
 //
-//  ExerciseView.swift
+//  ExerciseCardView.swift
 //  Simple Hangboard Timer
 //
 //  Created by YatFungLoo on 12/4/2025.
@@ -7,17 +7,20 @@
 
 import SwiftUI
 
-struct ExerciseView: View {
+struct ExerciseCardView: View {
     let exercise: Exercise
     var body: some View {
-        Text("exercise view")
+        VStack() {
+            Text("ExerciseCardView")
+        }
+        .foregroundStyle(exercise.theme.mainColor)
     }
 }
 
-struct ExerciseView_Preview: PreviewProvider {
+struct ExerciseCardView_Preview: PreviewProvider {
     static var exercise = Exercise.sampleData[0]
     static var previews: some View {
-        ExerciseView(exercise: exercise)
+        ExerciseCardView(exercise: exercise)
             .background(exercise.theme.mainColor)
             .previewLayout(.fixed(width: 400, height: 60))
     }
