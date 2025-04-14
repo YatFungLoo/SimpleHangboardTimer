@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct Simple_Hangboard_TimerApp: App {
+    @State private var exercises = Exercise.sampleData
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ExerciseListView(exercises: $exercises)
         }
     }
 }
