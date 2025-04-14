@@ -44,14 +44,28 @@ extension Exercise {
 }
 
 extension Exercise {
+    func secOrMin(lengthInSeconds: Int) -> String {
+        if (lengthInSeconds <= 0) {
+            return "invalid input"
+        } else if (lengthInSeconds < 60) {
+            return "\(lengthInSeconds) sec"
+        } else if (lengthInSeconds >= 60) {
+            let lengthInMinutes: Int = lengthInSeconds / 60
+            return "\(lengthInMinutes) min"
+        }
+        return ""
+    }
+}
+
+extension Exercise {
     static var sampleData: [Exercise] =
     [
-        Exercise(title: "7-3 hang",
+        Exercise(title: "Carrot Power",
                  intervals:[Interval(hang: 7, rest: 3, repeats: 5, off: 60)],
                  sets: 5,
                  theme: .orange,
                  history: []),
-        Exercise(title: "10-30 hang",
+        Exercise(title: "10-30 feet-on",
                  intervals:[Interval(hang: 10, rest: 30, repeats: 3, off: 120)],
                  sets: 3,
                  theme: .tan,

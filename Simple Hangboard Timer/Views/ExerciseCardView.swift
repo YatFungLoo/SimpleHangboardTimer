@@ -15,12 +15,7 @@ struct ExerciseCardView: View {
                 .font(.headline)
             Spacer()
             HStack {
-                if (exercise.intervals[0].off <= 60) {
-                    Label("\(exercise.intervals[0].hang)-\(exercise.intervals[0].rest) x \(exercise.intervals[0].repeats) /  \(exercise.intervals[0].off) sec rest", systemImage: "carrot")
-                } else if (exercise.intervals[0].off > 60) {
-                    let offInMintues = exercise.intervals[0].off / 60
-                    Label("\(exercise.intervals[0].hang)-\(exercise.intervals[0].rest) x \(exercise.intervals[0].repeats) / \(offInMintues) min rest", systemImage: "carrot")
-                }
+                Label("\(exercise.intervals[0].hang)-\(exercise.intervals[0].rest) \u{00D7} \(exercise.intervals[0].repeats) /  \(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].off)) rest", systemImage: "carrot")
                 Spacer()
                 Label("\(exercise.sets) sets", systemImage: "arrow.clockwise")
                     .labelStyle(.trailingIcon)

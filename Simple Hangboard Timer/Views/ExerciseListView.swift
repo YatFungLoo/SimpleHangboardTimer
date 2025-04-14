@@ -14,7 +14,7 @@ struct ExerciseListView: View {
     var body: some View {
         NavigationStack {
             List($exercises) { $exercise in
-                NavigationLink(destination: ExerciseView(exercise: exercise)) {
+                NavigationLink(destination: ExerciseDetailView(exercise: $exercise)) {
                     ExerciseCardView(exercise: exercise)
                 }
                 .listRowBackground(exercise.theme.mainColor)
