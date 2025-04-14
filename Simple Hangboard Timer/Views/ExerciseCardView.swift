@@ -10,10 +10,25 @@ import SwiftUI
 struct ExerciseCardView: View {
     let exercise: Exercise
     var body: some View {
-        VStack() {
-            Text("ExerciseCardView")
+        VStack(alignment: .center) {
+            Text(exercise.title)
+                .font(.headline)
+            Spacer()
+            HStack {
+                if (exercise.intervals[0].off <= 60) {
+                    Label("\(exercise.intervals[0].hang)-\(exercise.intervals[0].rest) x \(exercise.intervals[0].repeats) /  \(exercise.intervals[0].off) sec rest", systemImage: "carrot")
+                } else if (exercise.intervals[0].off > 60) {
+                    let offInMintues = exercise.intervals[0].off / 60
+                    Label("\(exercise.intervals[0].hang)-\(exercise.intervals[0].rest) x \(exercise.intervals[0].repeats) / \(offInMintues) min rest", systemImage: "carrot")
+                }
+                Spacer()
+                Label("\(exercise.sets) sets", systemImage: "arrow.clockwise")
+                    .labelStyle(.trailingIcon)
+            }
+            .font(.caption)
         }
-        .foregroundStyle(exercise.theme.mainColor)
+        .padding()
+        .foregroundStyle(exercise.theme.accentColor)
     }
 }
 
