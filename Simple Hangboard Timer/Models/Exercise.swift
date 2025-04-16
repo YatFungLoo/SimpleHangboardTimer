@@ -43,6 +43,20 @@ extension Exercise {
     }
 }
 
+struct Exec: Identifiable {
+    let id: UUID
+    let name: String
+    let durationInSeconds: Int
+    var isCompleted: Bool
+    
+    init(id: UUID = UUID(), name: String, durationInSeconds: Int, isCompleted: Bool) {
+        self.id = id
+        self.name = name
+        self.durationInSeconds = durationInSeconds
+        self.isCompleted = isCompleted
+    }
+}
+
 extension Exercise {
     func secOrMin(lengthInSeconds: Int) -> String {
         if (lengthInSeconds <= 0) {
@@ -54,6 +68,20 @@ extension Exercise {
             return "\(lengthInMinutes) min"
         }
         return ""
+    }
+    
+    func totalDurationInSec() -> Int {
+        let total: Int = ((self.intervals[0].hang + self.intervals[0].rest) * self.intervals[0].repeats + self.intervals[0].off) * self.sets
+        return total
+    }
+    
+    func tasksCompilation() -> [Exec] {
+        let baseTasks = Array(repeating: [
+            Exec(name: "hang", durationInSeconds: self.intervals[0].hang, isCompleted: false),
+            Exec(name: "rest", durationInSeconds: self.intervals[0].rest, isCompleted: false)
+        ], count: self.intervals[0].repeats).flatMap { $0 }
+        let fullTasks = baseTasks + [Exec(name: "off", durationInSeconds: self.intervals[0].off, isCompleted: false)]
+        return Array(repeating: fullTasks, count: self.sets).flatMap { $0 }
     }
 }
 

@@ -12,19 +12,25 @@ struct ExerciseDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Workout Info")) {
-                Label("Start Timer", systemImage: "timer")
+                NavigationLink(destination: ExerciseView(exercise: $exercise, tasks: exercise.tasksCompilation())) {
+                    Label("Start Timer", systemImage: "timer")
+                        .symbolEffect(.bounce, value: 1)
+                        .font(.headline)
+                }
                 HStack {
                     Label("Duration", systemImage: "clock")
+                    Spacer()
+                    Text("\(exercise.totalDurationInSec())")
                 }
             }
             Section(header: Text("Training Details")) {
                 HStack {
-                    Label("On", systemImage: "carrot")
+                    Label("On", systemImage: "carrot.fill")
                     Spacer()
                     Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].hang))")
                 }
                 HStack {
-                    Label("Off", systemImage: "carrot.fill")
+                    Label("Off", systemImage: "carrot")
                     Spacer()
                     Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].rest))")
                 }
@@ -60,7 +66,7 @@ struct ExerciseDetailView: View {
     }
 }
 
-struct ExerciseView_Preview: PreviewProvider {
+struct ExerciseDetailView_Preview: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ExerciseDetailView(exercise: .constant(Exercise.sampleData[1]))
