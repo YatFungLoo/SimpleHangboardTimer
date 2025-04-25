@@ -43,7 +43,7 @@ extension Exercise {
     }
 }
 
-struct Exec: Identifiable {
+struct UniqueExec: Identifiable {
     let id: UUID
     let name: String
     let durationInSeconds: Int
@@ -75,12 +75,12 @@ extension Exercise {
         return total
     }
     
-    func tasksCompilation() -> [Exec] {
+    func tasksCompilation() -> [UniqueExec] {
         let baseTasks = Array(repeating: [
-            Exec(name: "hang", durationInSeconds: self.intervals[0].hang, isCompleted: false),
-            Exec(name: "rest", durationInSeconds: self.intervals[0].rest, isCompleted: false)
+            UniqueExec(name: "hang", durationInSeconds: self.intervals[0].hang, isCompleted: false),
+            UniqueExec(name: "rest", durationInSeconds: self.intervals[0].rest, isCompleted: false)
         ], count: self.intervals[0].repeats).flatMap { $0 }
-        let fullTasks = baseTasks + [Exec(name: "off", durationInSeconds: self.intervals[0].off, isCompleted: false)]
+        let fullTasks = baseTasks + [UniqueExec(name: "off", durationInSeconds: self.intervals[0].off, isCompleted: false)]
         return Array(repeating: fullTasks, count: self.sets).flatMap { $0 }
     }
 }

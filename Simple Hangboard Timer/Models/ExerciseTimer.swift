@@ -10,11 +10,14 @@ import Foundation
 @MainActor
 final class ExerciseTimer: ObservableObject {
     @Published var activeExecName = ""
-    @Published var secondsElasped = 0
-    @Published var secondsRemaining = 0
+    @Published var totalSecondsElasped = 0
+    @Published var totalSecondsRemaining = 0
+    @Published var totalSeconds = 0
+    @Published var secondsRemaining = 0 // for each exercise
+    @Published var currentExecDuration = 0
     @Published var currentExecIndex = 0
     
-    private var execs: [Exec] = []
+    private var execs: [UniqueExec] = []
     private var lengthInSeconds: Int = 0
     
     var execChangedAction: (() -> Void)?
@@ -26,13 +29,16 @@ final class ExerciseTimer: ObservableObject {
     private var execIndex: Int = 0
     private var startDate: Date?
     
-    init(execs: [Exec] = []) {
+    init(execs: [UniqueExec] = []) {}
+    
+    func setup(execs: [UniqueExec]) {
         self.execs = execs
         self.secondsRemaining = self.execs.first?.durationInSeconds ?? 0
+        self.totalSeconds = execs.reduce(0) { $0 + $1.durationInSeconds }
     }
     
     func startExercise() {
-        timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: false)
+        timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
         {
             [weak self] timer in
             self?.update()
@@ -55,9 +61,14 @@ final class ExerciseTimer: ObservableObject {
         guard index < execs.count else { return }
         let currentExec = execs[index]
         activeExecName = currentExec.name
+        currentExecDuration = currentExec.durationInSeconds
         
-        secondsElasped = currentExec.durationInSeconds
-        secondsRemaining = lengthInSeconds - secondsElasped
+        if index <= 0 {
+            totalSecondsElasped = 0
+        } else {
+            totalSecondsElasped = execs.prefix(index - 1).reduce(0) {$0 + $1.durationInSeconds}
+        }
+        secondsRemaining = execs[index].durationInSeconds
         startDate = Date()
     }
     
@@ -66,17 +77,19 @@ final class ExerciseTimer: ObservableObject {
             guard let startDate, !timerStopped else { return }
             let secondsElapsed = Int(
                 Date().timeIntervalSince1970 - startDate.timeIntervalSince1970)
-//                        secondsElapsedForExec = secondsElapsed
-            //            self.secondsElasped =
-            //            secondsPerExec * execIndex + secondsElapsedForExec
-            //            guard secondsElapsed <= secondsPerExec else {
-            //                return
-            //            }
-            //            secondsRemaining = max(lengthInSeconds - self.secondsElasped, 0)
-            //
-            //            if secondsElapsedForExec >= secondsPerExec {
-            //                changeToExec(at: execIndex + 1)
-            //                execChangedAction?()
+            self.secondsRemaining = currentExecDuration - secondsElapsed
+            self.totalSecondsElasped = secondsElapsed
+//            self.secondsElasped =
+//            secondsPerExec * execIndex + secondsElapsedForExec
+//            guard secondsElapsed <= secondsPerExec else {
+//                return
+//            }
+            self.totalSecondsRemaining = max(self.totalSeconds - self.totalSecondsElasped, 0)
+//
+//            if secondsElapsedForExec >= secondsPerExec {
+//                changeToExec(at: execIndex + 1)
+//                execChangedAction?()
+//            }
         }
     }
 }

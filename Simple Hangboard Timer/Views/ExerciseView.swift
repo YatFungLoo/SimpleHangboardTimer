@@ -9,26 +9,26 @@ import SwiftUI
 
 struct ExerciseView: View {
     @Binding var exercise: Exercise
-    @State var tasks: [Exec]
     @StateObject var exerciseTimer = ExerciseTimer()
     
     func startExercise () {
-        ExerciseTimer().startExercise()
+        let compilation: [UniqueExec] = exercise.tasksCompilation()
+        exerciseTimer.setup(execs: compilation)
+        exerciseTimer.startExercise()
     }
     
     private var progress: Double {
         guard exercise.totalDurationInSec() > 0 else { return 1 }  // Base case check.
-        return Double(exerciseTimer.secondsElasped) / Double(exercise.totalDurationInSec())
+        return Double(exerciseTimer.totalSecondsElasped) / Double(exercise.totalDurationInSec())
     }
     
     var body: some View {
         VStack {
             ProgressView(value: progress)
-            ProgressView()
             Spacer()
-            Text("\(exerciseTimer.secondsElasped)")
+            Text("\(exerciseTimer.activeExecName): \(exerciseTimer.secondsRemaining) / \(exerciseTimer.currentExecDuration)")
             Spacer()
-            Text("Hello, World!")
+            Text("\(exerciseTimer.totalSecondsElasped) of \(exerciseTimer.totalSecondsRemaining) where total = \(exerciseTimer.totalSeconds)")
         }
         .onAppear {
             startExercise()
@@ -38,6 +38,6 @@ struct ExerciseView: View {
 
 struct ExerciseView_Preview: PreviewProvider {
     static var previews: some View {
-        ExerciseView(exercise: .constant(Exercise.sampleData[2]), tasks: Exercise.sampleData[2].tasksCompilation())
+        ExerciseView(exercise: .constant(Exercise.sampleData[1]))
     }
 }

@@ -12,7 +12,7 @@ struct ExerciseDetailView: View {
     var body: some View {
         List {
             Section(header: Text("Workout Info")) {
-                NavigationLink(destination: ExerciseView(exercise: $exercise, tasks: exercise.tasksCompilation())) {
+                NavigationLink(destination: ExerciseView(exercise: $exercise)) {
                     Label("Start Timer", systemImage: "timer")
                         .symbolEffect(.bounce, value: 1)
                         .font(.headline)
