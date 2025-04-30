@@ -88,6 +88,11 @@ extension Exercise {
 extension Exercise {
     static var sampleData: [Exercise] =
     [
+        Exercise(title: "Test",
+                 intervals:[Interval(hang: 3, rest: 2, repeats: 2, off: 5)],
+                 sets: 5,
+                 theme: .orange,
+                 history: []),
         Exercise(title: "Carrot Power",
                  intervals:[Interval(hang: 7, rest: 3, repeats: 5, off: 60)],
                  sets: 5,

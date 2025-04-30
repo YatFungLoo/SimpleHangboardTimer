@@ -18,7 +18,7 @@ final class ExerciseTimer: ObservableObject {
     @Published var currentExecIndex = 0
     
     private var execs: [UniqueExec] = []
-    private var lengthInSeconds: Int = 0
+    private var currExecElaspedSeconds: Int = 0 // keep track total seconds elasped
     
     var execChangedAction: (() -> Void)?
     private weak var timer: Timer?
@@ -37,6 +37,20 @@ final class ExerciseTimer: ObservableObject {
         self.totalSeconds = execs.reduce(0) { $0 + $1.durationInSeconds }
     }
     
+    func reset() {
+        activeExecName = ""
+        totalSecondsElasped = 0
+        totalSecondsRemaining = 0
+        totalSeconds = 0
+        secondsRemaining = 0 // for each exercise
+        currentExecDuration = 0
+        currentExecIndex = 0
+        currExecElaspedSeconds = 0
+        timerStopped = false
+        secondsElapsedForExec = 0
+        execIndex = 0
+    }
+    
     func startExercise() {
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
         {
@@ -53,6 +67,7 @@ final class ExerciseTimer: ObservableObject {
     }
     
     private func changeToExec(at index: Int) {
+        currentExecIndex = index
         if index > 0 {
             let previousExecIndex = index - 1
             execs[previousExecIndex].isCompleted = true
@@ -66,7 +81,8 @@ final class ExerciseTimer: ObservableObject {
         if index <= 0 {
             totalSecondsElasped = 0
         } else {
-            totalSecondsElasped = execs.prefix(index - 1).reduce(0) {$0 + $1.durationInSeconds}
+            totalSecondsElasped = execs.prefix(index).reduce(0) {$0 + $1.durationInSeconds}
+            currExecElaspedSeconds = totalSecondsElasped
         }
         secondsRemaining = execs[index].durationInSeconds
         startDate = Date()
@@ -77,19 +93,24 @@ final class ExerciseTimer: ObservableObject {
             guard let startDate, !timerStopped else { return }
             let secondsElapsed = Int(
                 Date().timeIntervalSince1970 - startDate.timeIntervalSince1970)
-            self.secondsRemaining = currentExecDuration - secondsElapsed
-            self.totalSecondsElasped = secondsElapsed
-//            self.secondsElasped =
-//            secondsPerExec * execIndex + secondsElapsedForExec
-//            guard secondsElapsed <= secondsPerExec else {
-//                return
-//            }
+            self.secondsRemaining = currentExecDuration - secondsElapsed // count down
+            self.totalSecondsElasped = currExecElaspedSeconds + secondsElapsed // count up
             self.totalSecondsRemaining = max(self.totalSeconds - self.totalSecondsElasped, 0)
-//
-//            if secondsElapsedForExec >= secondsPerExec {
-//                changeToExec(at: execIndex + 1)
-//                execChangedAction?()
-//            }
+            
+            if self.secondsRemaining <= 0 {
+                execIndex = execIndex + 1
+                changeToExec(at: execIndex)
+                execChangedAction?()
+            }
+            
+            if execIndex >= execs.count {
+                stopExercise()
+            }
+            //
+            //            if secondsElapsedForExec >= secondsPerExec {
+            //                changeToExec(at: execIndex + 1)
+            //                execChangedAction?()
+            //            }
         }
     }
 }

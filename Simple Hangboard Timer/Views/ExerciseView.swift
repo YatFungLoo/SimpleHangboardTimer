@@ -26,9 +26,24 @@ struct ExerciseView: View {
         VStack {
             ProgressView(value: progress)
             Spacer()
-            Text("\(exerciseTimer.activeExecName): \(exerciseTimer.secondsRemaining) / \(exerciseTimer.currentExecDuration)")
-            Spacer()
+            Text("\(exerciseTimer.currentExecIndex) -> \(exerciseTimer.activeExecName): \(exerciseTimer.secondsRemaining) / \(exerciseTimer.currentExecDuration)")
             Text("\(exerciseTimer.totalSecondsElasped) of \(exerciseTimer.totalSecondsRemaining) where total = \(exerciseTimer.totalSeconds)")
+            Spacer()
+            HStack {
+                Button("Previous") {
+                }
+                Button("Skip") {
+                }
+                Button("Restart") {
+                    exerciseTimer.reset()
+                    startExercise()
+                }
+                Button("Resume") {
+                }
+                Button("Stop") {
+                    exerciseTimer.stopExercise()
+                }
+            }
         }
         .onAppear {
             startExercise()
@@ -38,6 +53,6 @@ struct ExerciseView: View {
 
 struct ExerciseView_Preview: PreviewProvider {
     static var previews: some View {
-        ExerciseView(exercise: .constant(Exercise.sampleData[1]))
+        ExerciseView(exercise: .constant(Exercise.sampleData[0]))
     }
 }
