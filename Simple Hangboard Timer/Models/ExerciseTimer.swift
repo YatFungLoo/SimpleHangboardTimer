@@ -85,6 +85,10 @@ final class ExerciseTimer: ObservableObject {
         timerStopped = true
     }
     
+    func resumePauseExercise() {
+        timerStopped ? resumeExercise() : pauseExercise()
+    }
+    
     func skipExercise() {
         execIndex = execIndex + 1
         changeToExec(at: execIndex)

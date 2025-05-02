@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ExerciseView: View {
     @Binding var exercise: Exercise
+    @State private var confirmationShown = false
+    
     @StateObject var exerciseTimer = ExerciseTimer()
     
     func startExercise () {
@@ -31,16 +33,11 @@ struct ExerciseView: View {
             Spacer()
             VStack {
                 HStack {
-                    Button("Resume") {
-                        exerciseTimer.resumeExercise()
-                    }
-                    Button("Pause") {
-                        exerciseTimer.pauseExercise()
-                    }
-                }
-                HStack {
                     Button("Previous") {
                         exerciseTimer.previousExercise()
+                    }
+                    Button("Resume/Pause") {
+                        exerciseTimer.resumePauseExercise()
                     }
                     Button("Skip") {
                         exerciseTimer.skipExercise()
@@ -48,11 +45,18 @@ struct ExerciseView: View {
                 }
                 HStack {
                     Button("Restart") {
-                        exerciseTimer.reset()
-                        startExercise()
-                    }
-                    Button("Kill") {
-                        exerciseTimer.stopExercise()
+                        exerciseTimer.pauseExercise()
+                        confirmationShown = true
+                    }.confirmationDialog("This is a test", isPresented: $confirmationShown) {
+                        Button("Restart", role: .destructive) {
+                            exerciseTimer.reset()
+                            startExercise()
+                        }
+                        Button("Cancel", role: .cancel) {
+                            exerciseTimer.resumeExercise()
+                        }
+                    } message: {
+                        Text("This cannot ;_;")
                     }
                 }
             }
