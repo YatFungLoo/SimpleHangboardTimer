@@ -29,19 +29,29 @@ struct ExerciseView: View {
             Text("\(exerciseTimer.currentExecIndex) -> \(exerciseTimer.activeExecName): \(exerciseTimer.secondsRemaining) / \(exerciseTimer.currentExecDuration)")
             Text("\(exerciseTimer.totalSecondsElasped) of \(exerciseTimer.totalSecondsRemaining) where total = \(exerciseTimer.totalSeconds)")
             Spacer()
-            HStack {
-                Button("Previous") {
+            VStack {
+                HStack {
+                    Button("Resume") {
+                        exerciseTimer.resumeExercise()
+                    }
+                    Button("Pause") {
+                        exerciseTimer.pauseExercise()
+                    }
                 }
-                Button("Skip") {
+                HStack {
+                    Button("Previous") {
+                    }
+                    Button("Skip") {
+                    }
                 }
-                Button("Restart") {
-                    exerciseTimer.reset()
-                    startExercise()
-                }
-                Button("Resume") {
-                }
-                Button("Stop") {
-                    exerciseTimer.stopExercise()
+                HStack {
+                    Button("Restart") {
+                        exerciseTimer.reset()
+                        startExercise()
+                    }
+                    Button("Kill") {
+                        exerciseTimer.stopExercise()
+                    }
                 }
             }
         }

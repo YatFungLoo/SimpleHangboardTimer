@@ -26,6 +26,7 @@ final class ExerciseTimer: ObservableObject {
     private var timerStopped = false
     private var frequency: TimeInterval { 1.0 / 60.0 } // 60fps
     private var secondsElapsedForExec: Int = 0
+    private var deltaSeconds: Int = 0
     private var execIndex: Int = 0
     private var startDate: Date?
     
@@ -66,6 +67,24 @@ final class ExerciseTimer: ObservableObject {
         timerStopped = true
     }
     
+    func resumeExercise() {
+        timerStopped = false
+        startDate = Date()
+        timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
+        {
+            [weak self] timer in
+            self?.update()
+        }
+        timer?.tolerance = 0.1
+    }
+    
+    func pauseExercise() {
+        deltaSeconds = currentExecDuration - secondsRemaining
+        startDate = nil
+        timer?.invalidate()
+        timerStopped = true
+    }
+    
     private func changeToExec(at index: Int) {
         currentExecIndex = index
         if index > 0 {
@@ -85,6 +104,7 @@ final class ExerciseTimer: ObservableObject {
             currExecElaspedSeconds = totalSecondsElasped
         }
         secondsRemaining = execs[index].durationInSeconds
+        deltaSeconds = 0
         startDate = Date()
     }
     
@@ -93,8 +113,8 @@ final class ExerciseTimer: ObservableObject {
             guard let startDate, !timerStopped else { return }
             let secondsElapsed = Int(
                 Date().timeIntervalSince1970 - startDate.timeIntervalSince1970)
-            self.secondsRemaining = currentExecDuration - secondsElapsed // count down
-            self.totalSecondsElasped = currExecElaspedSeconds + secondsElapsed // count up
+            self.secondsRemaining = currentExecDuration - secondsElapsed - deltaSeconds // count down
+            self.totalSecondsElasped = currExecElaspedSeconds + secondsElapsed + deltaSeconds // count up
             self.totalSecondsRemaining = max(self.totalSeconds - self.totalSecondsElasped, 0)
             
             if self.secondsRemaining <= 0 {
