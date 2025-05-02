@@ -40,8 +40,10 @@ struct ExerciseView: View {
                 }
                 HStack {
                     Button("Previous") {
+                        exerciseTimer.previousExercise()
                     }
                     Button("Skip") {
+                        exerciseTimer.skipExercise()
                     }
                 }
                 HStack {

@@ -26,7 +26,7 @@ final class ExerciseTimer: ObservableObject {
     private var timerStopped = false
     private var frequency: TimeInterval { 1.0 / 60.0 } // 60fps
     private var secondsElapsedForExec: Int = 0
-    private var deltaSeconds: Int = 0
+    private var deltaSeconds: Int = 0 // store difference for update()
     private var execIndex: Int = 0
     private var startDate: Date?
     
@@ -83,6 +83,22 @@ final class ExerciseTimer: ObservableObject {
         startDate = nil
         timer?.invalidate()
         timerStopped = true
+    }
+    
+    func skipExercise() {
+        execIndex = execIndex + 1
+        changeToExec(at: execIndex)
+        execChangedAction?()
+    }
+    
+    func previousExercise() {
+        if execIndex <= 0 {
+            execIndex = 0
+        } else {
+            execIndex = execIndex - 1
+        }
+        changeToExec(at: max(execIndex, 0))
+        execChangedAction?()
     }
     
     private func changeToExec(at index: Int) {
