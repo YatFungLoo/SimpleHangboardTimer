@@ -90,7 +90,11 @@ final class ExerciseTimer: ObservableObject {
     }
     
     func skipExercise() {
-        execIndex = execIndex + 1
+        if execIndex >= execs.count - 1 {
+            execIndex = execs.count - 1
+        } else {
+            execIndex = execIndex + 1
+        }
         changeToExec(at: execIndex)
         execChangedAction?()
     }
@@ -110,6 +114,7 @@ final class ExerciseTimer: ObservableObject {
         if index > 0 {
             let previousExecIndex = index - 1
             execs[previousExecIndex].isCompleted = true
+            // TODO: mark isCompleted false for Exec after current.
         }
         secondsElapsedForExec = 0
         guard index < execs.count else { return }
@@ -119,10 +124,14 @@ final class ExerciseTimer: ObservableObject {
         
         if index <= 0 {
             totalSecondsElasped = 0
+            currExecElaspedSeconds = 0
+            totalSecondsRemaining = totalSeconds
         } else {
             totalSecondsElasped = execs.prefix(index).reduce(0) {$0 + $1.durationInSeconds}
             currExecElaspedSeconds = totalSecondsElasped
+            totalSecondsRemaining = max(totalSeconds - totalSecondsElasped, 0)
         }
+        
         secondsRemaining = execs[index].durationInSeconds
         deltaSeconds = 0
         startDate = Date()
@@ -137,20 +146,15 @@ final class ExerciseTimer: ObservableObject {
             self.totalSecondsElasped = currExecElaspedSeconds + secondsElapsed + deltaSeconds // count up
             self.totalSecondsRemaining = max(self.totalSeconds - self.totalSecondsElasped, 0)
             
-            if self.secondsRemaining <= 0 {
+            if self.secondsRemaining <= 0 && execIndex != execs.count - 1 {
                 execIndex = execIndex + 1
                 changeToExec(at: execIndex)
                 execChangedAction?()
             }
             
-            if execIndex >= execs.count {
+            if execIndex >= execs.count - 1 {
                 stopExercise()
             }
-            //
-            //            if secondsElapsedForExec >= secondsPerExec {
-            //                changeToExec(at: execIndex + 1)
-            //                execChangedAction?()
-            //            }
         }
     }
 }

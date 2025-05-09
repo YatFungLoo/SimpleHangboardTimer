@@ -71,7 +71,7 @@ extension Exercise {
     }
     
     func totalDurationInSec() -> Int {
-        let total: Int = ((self.intervals[0].hang + self.intervals[0].rest) * self.intervals[0].repeats + self.intervals[0].off) * self.sets
+        let total: Int = ((self.intervals[0].hang + self.intervals[0].rest) * self.intervals[0].repeats + self.intervals[0].off) * self.sets - self.intervals[0].off
         return total
     }
     
@@ -80,8 +80,10 @@ extension Exercise {
             UniqueExec(name: "hang", durationInSeconds: self.intervals[0].hang, isCompleted: false),
             UniqueExec(name: "rest", durationInSeconds: self.intervals[0].rest, isCompleted: false)
         ], count: self.intervals[0].repeats).flatMap { $0 }
-        let fullTasks = baseTasks + [UniqueExec(name: "off", durationInSeconds: self.intervals[0].off, isCompleted: false)]
-        return Array(repeating: fullTasks, count: self.sets).flatMap { $0 }
+        
+        let baseTasksWithOff = baseTasks + [UniqueExec(name: "off", durationInSeconds: self.intervals[0].off, isCompleted: false)]
+        
+        return Array(repeating: baseTasksWithOff, count: self.sets - 1).flatMap { $0 } + baseTasks + [UniqueExec(name: "end", durationInSeconds: 0, isCompleted: false)]
     }
 }
 
@@ -91,7 +93,7 @@ extension Exercise {
         Exercise(title: "Test",
                  intervals:[Interval(hang: 3, rest: 2, repeats: 2, off: 5)],
                  sets: 5,
-                 theme: .orange,
+                 theme: .bubblegum,
                  history: []),
         Exercise(title: "Carrot Power",
                  intervals:[Interval(hang: 7, rest: 3, repeats: 5, off: 60)],
