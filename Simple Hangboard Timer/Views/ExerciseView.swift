@@ -16,7 +16,7 @@ struct ExerciseView: View {
     func startExercise () {
         let compilation: [UniqueExec] = exercise.tasksCompilation()
         exerciseTimer.setup(execs: compilation)
-        exerciseTimer.startExercise()
+        exerciseTimer.readyExercise()
     }
     
     private var progress: Double {

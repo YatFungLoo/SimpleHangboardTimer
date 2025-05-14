@@ -24,6 +24,7 @@ final class ExerciseTimer: ObservableObject {
     private weak var timer: Timer?
     
     private var timerStopped = false
+    private var isReady = false
     private var frequency: TimeInterval { 1.0 / 60.0 } // 60fps
     private var secondsElapsedForExec: Int = 0
     private var deltaSeconds: Int = 0 // store difference for update()
@@ -67,15 +68,34 @@ final class ExerciseTimer: ObservableObject {
         timerStopped = true
     }
     
-    func resumeExercise() {
-        timerStopped = false
-        startDate = Date()
+    func readyExercise() {
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
         {
             [weak self] timer in
-            self?.update()
+            self?.ready()
         }
         timer?.tolerance = 0.1
+        currentExecDuration = 3
+        startDate = Date()
+    }
+    
+    func resumeExercise() {
+        timerStopped = false
+        if isReady == true {
+            timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
+            {
+                [weak self] timer in
+                self?.update()
+            }
+        } else {
+            timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
+            {
+                [weak self] timer in
+                self?.ready()
+            }
+        }
+        timer?.tolerance = 0.1
+        startDate = Date()
     }
     
     func pauseExercise() {
@@ -137,6 +157,20 @@ final class ExerciseTimer: ObservableObject {
         startDate = Date()
     }
     
+    nonisolated private func ready() {
+        Task { @MainActor in
+            guard let startDate, !timerStopped else { return }
+            let secondsElapsed = Int(
+                Date().timeIntervalSince1970 - startDate.timeIntervalSince1970)
+            self.secondsRemaining = currentExecDuration - secondsElapsed // count down
+            
+            if self.secondsRemaining <= 0 {
+                isReady = true
+                startExercise()
+            }
+        }
+    }
+
     nonisolated private func update() {
         Task { @MainActor in
             guard let startDate, !timerStopped else { return }
