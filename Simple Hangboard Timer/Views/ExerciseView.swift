@@ -27,6 +27,8 @@ struct ExerciseView: View {
     var body: some View {
         VStack {
             ProgressView(value: progress)
+                .progressViewStyle(DefaultProgressViewStyle())
+                .tint(exercise.theme.mainColor)
             Spacer()
             Text("\(exerciseTimer.currentExecIndex) -> \(exerciseTimer.activeExecName): \(exerciseTimer.secondsRemaining) / \(exerciseTimer.currentExecDuration)")
             Text("\(exerciseTimer.totalSecondsElasped) of \(exerciseTimer.totalSecondsRemaining) where total = \(exerciseTimer.totalSeconds)")

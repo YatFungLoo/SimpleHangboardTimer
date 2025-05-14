@@ -49,6 +49,7 @@ final class ExerciseTimer: ObservableObject {
         currentExecIndex = 0
         currExecElaspedSeconds = 0
         timerStopped = false
+        isReady = false
         secondsElapsedForExec = 0
         execIndex = 0
     }
@@ -112,6 +113,9 @@ final class ExerciseTimer: ObservableObject {
     func skipExercise() {
         if execIndex >= execs.count - 1 {
             execIndex = execs.count - 1
+        } else if isReady == false {
+            isReady = true
+            execIndex = 0
         } else {
             execIndex = execIndex + 1
         }
