@@ -74,7 +74,7 @@ struct ExerciseDetailView: View {
             }
         }
         .sheet(isPresented: $isPresentingEditView) {
-            
+            EditingExerciseSheet(exercise: $exercise, editingExercise: $editingExercise, isPresentingEditView: $isPresentingEditView)
         }
     }
 }
