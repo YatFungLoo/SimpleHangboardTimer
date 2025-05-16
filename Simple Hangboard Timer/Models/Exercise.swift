@@ -15,13 +15,12 @@ struct Exercise: Identifiable, Codable {
     var theme: Theme
     var history: [History] = []
     
-    init(id: UUID = UUID(), title: String, intervals: [Interval], sets: Int, theme: Theme, history: [History]) {
+    init(id: UUID = UUID(), title: String, intervals: [Interval], sets: Int, theme: Theme) {
         self.id = id
         self.title = title
         self.intervals = intervals
         self.sets = sets
         self.theme = theme
-        self.history = history
     }
 }
 
@@ -40,6 +39,14 @@ extension Exercise {
             self.repeats = repeats
             self.off = off
         }
+    }
+    
+    static var emptyExercise: Exercise {
+        Exercise(
+            title :"",
+            intervals :[],
+            sets :0,
+            theme :.sky)
     }
 }
 
@@ -93,22 +100,18 @@ extension Exercise {
         Exercise(title: "Test",
                  intervals:[Interval(hang: 3, rest: 2, repeats: 2, off: 5)],
                  sets: 5,
-                 theme: .bubblegum,
-                 history: []),
+                 theme: .bubblegum),
         Exercise(title: "Carrot Power",
                  intervals:[Interval(hang: 7, rest: 3, repeats: 5, off: 60)],
                  sets: 5,
-                 theme: .orange,
-                 history: []),
+                 theme: .orange),
         Exercise(title: "10-30 feet-on",
                  intervals:[Interval(hang: 10, rest: 30, repeats: 3, off: 120)],
                  sets: 3,
-                 theme: .tan,
-                 history: []),
+                 theme: .tan),
         Exercise(title: "Rehab hang",
                  intervals:[Interval(hang: 60, rest: 120, repeats: 2, off: 180)],
                  sets: 5,
-                 theme: .indigo,
-                 history: []),
+                 theme: .indigo),
     ]
 }

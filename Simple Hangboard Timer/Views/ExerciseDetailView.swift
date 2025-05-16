@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ExerciseDetailView: View {
     @Binding var exercise: Exercise
+    
+    @State private var editingExercise = Exercise.emptyExercise
+    @State private var isPresentingEditView = false
+    
     var body: some View {
         List {
             Section(header: Text("Workout Info")) {
@@ -63,6 +67,15 @@ struct ExerciseDetailView: View {
             }
         }
         .navigationTitle(exercise.title)
+        .toolbar {
+            Button("Edit") {
+                isPresentingEditView = true
+                editingExercise = exercise
+            }
+        }
+        .sheet(isPresented: $isPresentingEditView) {
+            
+        }
     }
 }
 
