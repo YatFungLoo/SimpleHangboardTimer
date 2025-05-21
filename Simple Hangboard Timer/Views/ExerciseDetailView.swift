@@ -31,17 +31,17 @@ struct ExerciseDetailView: View {
                 HStack {
                     Label("On", systemImage: "carrot.fill")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].hang))")
+                    Text("\(exercise.timeFormatter(length: exercise.intervals[0].hangMinIndex)):\(exercise.timeFormatter(length:  exercise.intervals[0].hangSecIndex))")
                 }
                 HStack {
                     Label("Off", systemImage: "carrot")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].rest))")
+                    Text("\(exercise.timeFormatter(length: exercise.intervals[0].restMinIndex)):\(exercise.timeFormatter(length:  exercise.intervals[0].restSecIndex))")
                 }
                 HStack {
                     Label("Rest", systemImage: "powersleep")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].off))")
+                    Text("\(exercise.timeFormatter(length: exercise.intervals[0].offMinIndex)):\(exercise.timeFormatter(length:  exercise.intervals[0].offSecIndex))")
                 }
                 HStack {
                     Label("Reps", systemImage: "repeat")

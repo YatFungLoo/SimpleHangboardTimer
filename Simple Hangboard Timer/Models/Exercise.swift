@@ -87,15 +87,14 @@ struct UniqueExec: Identifiable {
 
 extension Exercise {
     func secOrMin(lengthInSeconds: Int) -> String {
-        if (lengthInSeconds <= 0) {
-            return "invalid input"
-        } else if (lengthInSeconds < 60) {
-            return "\(lengthInSeconds) sec"
-        } else if (lengthInSeconds >= 60) {
-            let lengthInMinutes: Int = lengthInSeconds / 60
-            return "\(lengthInMinutes) min"
-        }
-        return ""
+        guard lengthInSeconds > 0 else { return "error" }
+        return lengthInSeconds < 60 ? "\(lengthInSeconds) sec" : "\(lengthInSeconds / 60) min"
+    }
+
+    func timeFormatter(length: Int) -> String {
+        guard length > 0 else { return "00" }
+        guard length <= 60 else { return "error" }
+        return length < 10 ? "0\(length)" : "\(length)"
     }
     
     func totalDurationInSec() -> Int {
@@ -123,15 +122,15 @@ extension Exercise {
                  sets: 5,
                  theme: .bubblegum),
         Exercise(title: "Carrot Power",
-                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 7, restMinIndex: 0, restSecIndex: 3, offMinIndex: 0, offSecIndex: 60, repeats: 5)],
+                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 7, restMinIndex: 0, restSecIndex: 3, offMinIndex: 1, offSecIndex: 0, repeats: 5)],
                  sets: 5,
                  theme: .orange),
         Exercise(title: "10-30 feet-on",
-                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 10, restMinIndex: 0, restSecIndex: 30, offMinIndex: 0, offSecIndex: 120, repeats: 3)],
+                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 10, restMinIndex: 0, restSecIndex: 30, offMinIndex: 2, offSecIndex: 0, repeats: 3)],
                  sets: 3,
                  theme: .tan),
         Exercise(title: "Rehab hang",
-                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 60, restMinIndex: 0, restSecIndex: 120, offMinIndex: 0, offSecIndex: 180, repeats: 2)],
+                 intervals:[Interval(hangMinIndex: 1, hangSecIndex: 0, restMinIndex: 2, restSecIndex: 0, offMinIndex: 3, offSecIndex: 0, repeats: 2)],
                  sets: 5,
                  theme: .indigo),
     ]
