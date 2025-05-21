@@ -27,17 +27,38 @@ struct Exercise: Identifiable, Codable {
 extension Exercise {
     struct Interval: Identifiable, Codable {
         let id: UUID
-        var hang: Int
-        var rest: Int
+        var hangMinIndex: Int
+        var hangSecIndex: Int
+        var hang: Int {
+            get {
+                hangMinIndex * 60 + hangSecIndex
+            }
+        }
+        var restMinIndex: Int
+        var restSecIndex: Int
+        var rest: Int {
+              get {
+                restMinIndex * 60 + restSecIndex
+            }
+        }
+        var offMinIndex: Int
+        var offSecIndex: Int
+        var off: Int {
+                    get {
+                offMinIndex * 60 + offSecIndex
+            }
+        }
         var repeats: Int
-        var off: Int
-        
-        init(id: UUID = UUID(), hang: Int, rest: Int, repeats: Int, off: Int) {
+
+        init(id: UUID = UUID(), hangMinIndex: Int, hangSecIndex: Int, restMinIndex: Int, restSecIndex: Int, offMinIndex: Int, offSecIndex: Int, repeats: Int) {
             self.id = id
-            self.hang = hang
-            self.rest = rest
+            self.hangMinIndex = hangMinIndex
+            self.hangSecIndex = hangSecIndex
+            self.restMinIndex = restMinIndex
+            self.restSecIndex = restSecIndex
+            self.offMinIndex = offMinIndex
+            self.offSecIndex = offSecIndex
             self.repeats = repeats
-            self.off = off
         }
     }
     
@@ -98,19 +119,19 @@ extension Exercise {
     static var sampleData: [Exercise] =
     [
         Exercise(title: "Test",
-                 intervals:[Interval(hang: 3, rest: 2, repeats: 2, off: 5)],
+                 intervals: [Interval(hangMinIndex: 0, hangSecIndex: 3, restMinIndex: 0, restSecIndex: 3, offMinIndex: 0, offSecIndex: 5, repeats: 2)],
                  sets: 5,
                  theme: .bubblegum),
         Exercise(title: "Carrot Power",
-                 intervals:[Interval(hang: 7, rest: 3, repeats: 5, off: 60)],
+                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 7, restMinIndex: 0, restSecIndex: 3, offMinIndex: 0, offSecIndex: 60, repeats: 5)],
                  sets: 5,
                  theme: .orange),
         Exercise(title: "10-30 feet-on",
-                 intervals:[Interval(hang: 10, rest: 30, repeats: 3, off: 120)],
+                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 10, restMinIndex: 0, restSecIndex: 30, offMinIndex: 0, offSecIndex: 120, repeats: 3)],
                  sets: 3,
                  theme: .tan),
         Exercise(title: "Rehab hang",
-                 intervals:[Interval(hang: 60, rest: 120, repeats: 2, off: 180)],
+                 intervals:[Interval(hangMinIndex: 0, hangSecIndex: 60, restMinIndex: 0, restSecIndex: 120, offMinIndex: 0, offSecIndex: 180, repeats: 2)],
                  sets: 5,
                  theme: .indigo),
     ]
