@@ -15,17 +15,22 @@ struct EditingExerciseSheet: View {
     var body: some View {
         NavigationStack {
             EditExerciseView(exercise: $editingExercise)
-                .navigationTitle("Editing: \(exercise.title)")
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Weak") {
+                        Button("Cancel") {
                             isPresentingEditView = false
                         }
                     }
                 }
                 .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text("Edit Details")
+                            .font(.headline)
+                    }
+                }
+                .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Strong") {
+                        Button("Save") {
                             isPresentingEditView = false
                             exercise = editingExercise
                         }

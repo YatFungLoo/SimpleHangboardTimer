@@ -91,7 +91,7 @@ extension Exercise {
         return lengthInSeconds < 60 ? "\(lengthInSeconds) sec" : "\(lengthInSeconds / 60) min"
     }
 
-    func timeFormatter(length: Int) -> String {
+    func timeFormatter(_ length: Int) -> String {
         guard length > 0 else { return "00" }
         guard length <= 60 else { return "error" }
         return length < 10 ? "0\(length)" : "\(length)"
@@ -100,6 +100,13 @@ extension Exercise {
     func totalDurationInSec() -> Int {
         let total: Int = ((self.intervals[0].hang + self.intervals[0].rest) * self.intervals[0].repeats + self.intervals[0].off) * self.sets - self.intervals[0].off
         return total
+    }
+    
+    func totalDurationFormatter() -> String {
+        let lengthInSeconds = totalDurationInSec()
+        let min = timeFormatter(lengthInSeconds / 60)
+        let sec = timeFormatter(lengthInSeconds % 60)
+        return "\(min):\(sec)"
     }
     
     func tasksCompilation() -> [UniqueExec] {
