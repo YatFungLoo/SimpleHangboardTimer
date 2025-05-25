@@ -10,57 +10,45 @@ import SwiftUI
 struct EditExerciseView: View {
     @Binding var exercise: Exercise
     
-    private let minRange = 0..<6
-    private let secRange = 0..<60
-    
     var body: some View {
         Form {
-            Section(header: Text("Title")) {
+            Section(header: Text("Click To Change Title")) {
                 TextField("Title", text: $exercise.title)
             }
-            Section(header: Text("Training Details")) {
-                HStack {
-                    VStack {
-                        HStack {
-                            Label("Off", systemImage: "carrot")
-                            Spacer()
-                            Text("\(exercise.intervals[0].hang)")
-                        }
-                        HStack {
-                            Picker(selection: $exercise.intervals[0].hangMinIndex, label: Text("Hang")) {
-                                ForEach(minRange, id: \.self) {     // TODO: look into this more soon.
-                                    Text("\($0)")
-                                }
-                            }
-                            .pickerStyle(WheelPickerStyle())
-                            Picker(selection: $exercise.intervals[0].hangSecIndex, label: Text("Hang")) {
-                                ForEach(secRange, id: \.self) { 
-                                    Text("\($0)")
-                                }
-                            }
-                            .pickerStyle(WheelPickerStyle())
-                        }
-                    }
+            Section(header: Text("Click On Item To Edit")) {
+                CollapsibleMinSecPicker(minutes: $exercise.intervals[0].hangMinIndex, seconds: $exercise.intervals[0].hangSecIndex) {
+                    Label("On", systemImage: "carrot.fill")
+                    Spacer()
+                    Text("\(exercise.timeFormatter(exercise.intervals[0].hangMinIndex)):\(exercise.timeFormatter(exercise.intervals[0].hangSecIndex))")
+                        .foregroundStyle(.blue)
                 }
-                HStack {
+                CollapsibleMinSecPicker(minutes: $exercise.intervals[0].restMinIndex, seconds: $exercise.intervals[0].restSecIndex) {
                     Label("Off", systemImage: "carrot")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].rest))")
+                    Text("\(exercise.timeFormatter(exercise.intervals[0].restMinIndex)):\(exercise.timeFormatter(exercise.intervals[0].restSecIndex))")
+                        .foregroundStyle(.blue)
                 }
-                HStack {
+                CollapsibleMinSecPicker(minutes: $exercise.intervals[0].offMinIndex, seconds: $exercise.intervals[0].offSecIndex) {
                     Label("Rest", systemImage: "powersleep")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].off))")
+                    Text("\(exercise.timeFormatter(exercise.intervals[0].offMinIndex)):\(exercise.timeFormatter(exercise.intervals[0].offSecIndex))")
+                        .foregroundStyle(.blue)
                 }
                 HStack {
-                    Label("Reps", systemImage: "repeat")
+                    Label("Reps: ", systemImage: "repeat")
                     Spacer()
-                    Text("\(exercise.intervals[0].repeats)")
+                    Stepper("\(exercise.intervals[0].repeats)",
+                            value: $exercise.intervals[0].repeats,
+                            in: 0...20,
+                            step: 1)
                 }
                 HStack {
-                    Label("Sets", systemImage: "arrow.trianglehead.clockwise.rotate.90")
+                    Label("Sets: ", systemImage: "arrow.trianglehead.clockwise.rotate.90")
                     Spacer()
-                    Text("\(exercise.sets)")
+                    Stepper("\(exercise.sets)",
+                            value: $exercise.sets,
+                            in: 0...20,
+                            step: 1)
                 }
             }
         }
