@@ -17,8 +17,13 @@ struct CollapsibleView<Label, Content>: View where Label: View, Content: View {
     
     var body: some View {
         Group {
-            Button(action: { withAnimation() {isPresentingPicker.toggle()} }, label: label)
-                .buttonStyle(.plain)
+            Button(action: { withAnimation() {isPresentingPicker.toggle()} }) {
+                HStack {
+                   label()
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
             if isPresentingPicker {
                content()
             }
@@ -26,56 +31,55 @@ struct CollapsibleView<Label, Content>: View where Label: View, Content: View {
     }
 }
 
-struct CollapsibleMinSecPicker<MinutesValue, SecondsValue, Content, Label>: View where MinutesValue: Hashable, SecondsValue: Hashable, Content: View, Label: View{
+struct CollapsibleMinSecPicker<MinutesValue, SecondsValue, Label>: View where MinutesValue: Hashable, SecondsValue: Hashable, Label: View{
     @Binding var minutes: MinutesValue
     @Binding var seconds: SecondsValue
-    @ViewBuilder let content: () -> Content
     @ViewBuilder let label: () -> Label
-
-    private let Range = 0..<60
+    
+    private let minutesRange = 0..<6
+    private let secondsRange = 0..<60
     
     var body: some View {
         CollapsibleView(label: label) {
             HStack {
-                Picker(selection: $minutes, content: content) {
-                    EmptyView()
+                Picker("", selection: $minutes) {
+                    ForEach(minutesRange, id: \.self) { id in
+                        Text("\(id)")
+                            .tag(id)
+                    }
                 }
                 .pickerStyle(.wheel)
-                Picker(selection: $seconds, content: content) {
-                    EmptyView()
+                Text("minutes")
+                Picker("", selection: $seconds) {
+                    ForEach(secondsRange, id: \.self) { id in
+                        Text("\(id)")
+                            .tag(id)
+                    }
                 }
                 .pickerStyle(.wheel)
+                Text("seconds")
             }
         }
     }
 }
 
 struct CollapsibleMinSecPicker_PreviewProvider: PreviewProvider {
+    static func Formatter(_ length: Int) -> String {
+        guard length > 0 else { return "00"}
+        guard length <= 60 else { return "error"}
+        return length < 10 ? "0\(length)" : "\(length)"
+    }
+    
     static var previews: some View {
         @State var minutes: Int = 0
         @State var seconds: Int = 0
         
-        let Range = 0..<60
-        
         Form {
             CollapsibleMinSecPicker(minutes: $minutes, seconds: $seconds) {
-                ForEach(Range, id: \.self) {     // TODO: look into this more soon.
-                    Text("\($0)")
-                }
-            } label: {
-                Text("Minutes")
+                Text("Timer")
                 Spacer()
-                Text("\(minutes)")
+                Text("\(Formatter(minutes)):\(Formatter(seconds))")
                     .foregroundStyle(.blue.gradient)
-            }
-            CollapsibleMinSecPicker(minutes: $minutes, seconds: $seconds) {
-                ForEach(Range, id: \.self) {     // TODO: look into this more soon.
-                    Text("\($0)")
-                }
-            } label: {
-                Text("Minutes")
-                Spacer()
-                Text("\(minutes)")
             }
         }
     }
