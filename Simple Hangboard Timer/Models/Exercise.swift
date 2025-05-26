@@ -65,9 +65,20 @@ extension Exercise {
     static var emptyExercise: Exercise {
         Exercise(
             title :"",
-            intervals :[],
-            sets :0,
+            intervals :[emptyInterval], // need to add a default interval
+            sets :1,
             theme :.sky)
+    }
+    
+    static var emptyInterval: Interval {
+        Interval(hangMinIndex: 0,
+                 hangSecIndex: 0,
+                 restMinIndex: 0,
+                 restSecIndex: 0,
+                 offMinIndex: 0,
+                 offSecIndex: 0,
+                 repeats: 1
+        )
     }
 }
 
@@ -124,19 +135,15 @@ extension Exercise {
 extension Exercise {
     static var sampleData: [Exercise] =
     [
-        Exercise(title: "Test",
-                 intervals: [Interval(hangMinIndex: 0, hangSecIndex: 3, restMinIndex: 0, restSecIndex: 3, offMinIndex: 0, offSecIndex: 5, repeats: 2)],
-                 sets: 5,
-                 theme: .bubblegum),
-        Exercise(title: "Carrot Power",
+        Exercise(title: "7-3 hang",
                  intervals:[Interval(hangMinIndex: 0, hangSecIndex: 7, restMinIndex: 0, restSecIndex: 3, offMinIndex: 1, offSecIndex: 0, repeats: 5)],
-                 sets: 5,
+                 sets: 3,
                  theme: .orange),
         Exercise(title: "10-30 feet-on",
                  intervals:[Interval(hangMinIndex: 0, hangSecIndex: 10, restMinIndex: 0, restSecIndex: 30, offMinIndex: 2, offSecIndex: 0, repeats: 3)],
-                 sets: 3,
+                 sets: 2,
                  theme: .tan),
-        Exercise(title: "Rehab hang",
+        Exercise(title: "Rehab",
                  intervals:[Interval(hangMinIndex: 1, hangSecIndex: 0, restMinIndex: 2, restSecIndex: 0, offMinIndex: 3, offSecIndex: 0, repeats: 2)],
                  sets: 5,
                  theme: .indigo),

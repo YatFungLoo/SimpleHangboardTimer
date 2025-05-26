@@ -39,7 +39,7 @@ struct EditExerciseView: View {
                     Spacer()
                     Stepper("\(exercise.intervals[0].repeats)",
                             value: $exercise.intervals[0].repeats,
-                            in: 0...20,
+                            in: 1...20,
                             step: 1)
                 }
                 HStack {
@@ -47,8 +47,19 @@ struct EditExerciseView: View {
                     Spacer()
                     Stepper("\(exercise.sets)",
                             value: $exercise.sets,
-                            in: 0...20,
+                            in: 1...20,
                             step: 1)
+                }
+            }
+            Section(header: Text("Misc")) {
+                HStack {
+                    Picker("Theme", selection: $exercise.theme) {
+                        ForEach(Theme.allCases) { theme in
+                            ThemeView(theme: theme)
+                                .tag(theme)  // TODO: what are SwiftUI tag
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
                 }
             }
         }
