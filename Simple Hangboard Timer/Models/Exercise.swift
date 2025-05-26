@@ -66,7 +66,7 @@ extension Exercise {
         Exercise(
             title :"",
             intervals :[emptyInterval], // need to add a default interval
-            sets :0,
+            sets :1,
             theme :.sky)
     }
     
@@ -77,7 +77,7 @@ extension Exercise {
                  restSecIndex: 0,
                  offMinIndex: 0,
                  offSecIndex: 0,
-                 repeats: 0
+                 repeats: 1
         )
     }
 }

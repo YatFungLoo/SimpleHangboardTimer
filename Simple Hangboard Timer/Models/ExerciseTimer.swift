@@ -55,6 +55,8 @@ final class ExerciseTimer: ObservableObject {
     }
     
     func startExercise() {
+        timer?.invalidate()
+        timerStopped = false
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
         {
             [weak self] timer in
@@ -70,6 +72,7 @@ final class ExerciseTimer: ObservableObject {
     }
     
     func readyExercise() {
+        timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
         {
             [weak self] timer in
@@ -81,6 +84,7 @@ final class ExerciseTimer: ObservableObject {
     }
     
     func resumeExercise() {
+        timer?.invalidate()
         timerStopped = false
         if isReady == true {
             timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
