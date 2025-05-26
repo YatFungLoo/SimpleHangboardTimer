@@ -65,9 +65,20 @@ extension Exercise {
     static var emptyExercise: Exercise {
         Exercise(
             title :"",
-            intervals :[],
+            intervals :[emptyInterval], // need to add a default interval
             sets :0,
             theme :.sky)
+    }
+    
+    static var emptyInterval: Interval {
+        Interval(hangMinIndex: 0,
+                 hangSecIndex: 0,
+                 restMinIndex: 0,
+                 restSecIndex: 0,
+                 offMinIndex: 0,
+                 offSecIndex: 0,
+                 repeats: 0
+        )
     }
 }
 
