@@ -18,7 +18,6 @@ struct ExerciseDetailView: View {
             Section(header: Text("Workout Info")) {
                 NavigationLink(destination: ExerciseView(exercise: $exercise)) {
                     Label("Start Timer", systemImage: "timer")
-                        .symbolEffect(.bounce, value: 1)
                         .font(.headline)
                 }
                 HStack {
