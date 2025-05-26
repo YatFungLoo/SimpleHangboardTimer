@@ -9,35 +9,38 @@ import SwiftUI
 
 struct ExerciseDetailView: View {
     @Binding var exercise: Exercise
+    
+    @State private var editingExercise = Exercise.emptyExercise
+    @State private var isPresentingEditView = false
+    
     var body: some View {
         List {
             Section(header: Text("Workout Info")) {
                 NavigationLink(destination: ExerciseView(exercise: $exercise)) {
                     Label("Start Timer", systemImage: "timer")
-                        .symbolEffect(.bounce, value: 1)
                         .font(.headline)
                 }
                 HStack {
                     Label("Duration", systemImage: "clock")
                     Spacer()
-                    Text("\(exercise.totalDurationInSec())")
+                    Text("\(exercise.totalDurationFormatter())")
                 }
             }
             Section(header: Text("Training Details")) {
                 HStack {
                     Label("On", systemImage: "carrot.fill")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].hang))")
+                    Text("\(exercise.timeFormatter(exercise.intervals[0].hangMinIndex)):\(exercise.timeFormatter(exercise.intervals[0].hangSecIndex))")
                 }
                 HStack {
                     Label("Off", systemImage: "carrot")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].rest))")
+                    Text("\(exercise.timeFormatter(exercise.intervals[0].restMinIndex)):\(exercise.timeFormatter( exercise.intervals[0].restSecIndex))")
                 }
                 HStack {
                     Label("Rest", systemImage: "powersleep")
                     Spacer()
-                    Text("\(exercise.secOrMin(lengthInSeconds: exercise.intervals[0].off))")
+                    Text("\(exercise.timeFormatter(exercise.intervals[0].offMinIndex)):\(exercise.timeFormatter( exercise.intervals[0].offSecIndex))")
                 }
                 HStack {
                     Label("Reps", systemImage: "repeat")
@@ -63,6 +66,15 @@ struct ExerciseDetailView: View {
             }
         }
         .navigationTitle(exercise.title)
+        .toolbar {
+            Button("Edit") {
+                isPresentingEditView = true
+                editingExercise = exercise
+            }
+        }
+        .sheet(isPresented: $isPresentingEditView) {
+            EditingExerciseSheet(exercise: $exercise, editingExercise: $editingExercise, isPresentingEditView: $isPresentingEditView)
+        }
     }
 }
 

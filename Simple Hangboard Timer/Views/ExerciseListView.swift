@@ -9,8 +9,10 @@ import SwiftUI
 
 struct ExerciseListView: View {
     @Binding var exercises: [Exercise]
+    @Environment(\.scenePhase) private var scenePhase  // Return current view operational state.
     @State private var isPresentingNewExerciseView = false
-    
+    let saveAction: () -> Void
+
     var body: some View {
         NavigationStack {
             List($exercises) { $exercise in
@@ -28,14 +30,20 @@ struct ExerciseListView: View {
                 }
             }
             .sheet(isPresented: $isPresentingNewExerciseView) {
-                NewExerciseSheet()
+                NewExerciseSheet(
+                    exercises: $exercises,
+                    isPresentingNewExerciseView: $isPresentingNewExerciseView
+                )
+            }
+            .onChange(of: scenePhase) { phase in
+                if phase == .inactive { saveAction() }
             }
         }
     }
 }
 
-struct TimerListView_Previews: PreviewProvider {
+struct ExerciseListView_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseListView(exercises: .constant(Exercise.sampleData))
+        ExerciseListView(exercises: .constant(Exercise.sampleData), saveAction: {})
     }
 }
