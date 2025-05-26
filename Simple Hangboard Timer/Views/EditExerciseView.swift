@@ -51,6 +51,17 @@ struct EditExerciseView: View {
                             step: 1)
                 }
             }
+            Section(header: Text("Misc")) {
+                HStack {
+                    Picker("Theme", selection: $exercise.theme) {
+                        ForEach(Theme.allCases) { theme in
+                            ThemeView(theme: theme)
+                                .tag(theme)  // TODO: what are SwiftUI tag
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
+                }
+            }
         }
     }
 }
