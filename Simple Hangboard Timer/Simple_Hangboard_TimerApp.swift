@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct Simple_Hangboard_TimerApp: App {
     @StateObject private var store = ExerciseStore()
-    @State private var errorWrapper: ErrorWrapper?  // Default value of an optional is nil. (Note: use ":")
+    @State private var errorWrapper: ErrorWrapper?
 
     var body: some Scene {
         WindowGroup {
@@ -27,6 +27,10 @@ struct Simple_Hangboard_TimerApp: App {
             .task {
                 do {
                     try await store.load()
+                    if store.exercises.isEmpty {
+                        store.exercises = Exercise.sampleData
+                        try await store.save(exercises: store.exercises)
+                    }
                 } catch {
                     errorWrapper = ErrorWrapper(
                         error: error,
