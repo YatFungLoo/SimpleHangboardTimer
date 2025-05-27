@@ -120,6 +120,7 @@ final class ExerciseTimer: ObservableObject {
         } else if isReady == false {
             isReady = true
             execIndex = 0
+            startExercise()
         } else {
             execIndex = execIndex + 1
         }
