@@ -15,7 +15,7 @@ struct ExerciseListView: View {
 
     var body: some View {
         NavigationStack {
-            List($exercises) { $exercise in
+            List($exercises, editActions: .delete) { $exercise in
                 NavigationLink(destination: ExerciseDetailView(exercise: $exercise)) {
                     ExerciseCardView(exercise: exercise)
                 }
