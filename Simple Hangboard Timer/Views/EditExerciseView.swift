@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EditExerciseView: View {
+    @State private var confirmationShown = false
     @Binding var exercise: Exercise
     
     var body: some View {
@@ -61,6 +62,20 @@ struct EditExerciseView: View {
                     }
                     .pickerStyle(.navigationLink)
                 }
+            }
+            Section {
+                    Button("Delete timer", role: .destructive) {
+                        confirmationShown = true
+                    }
+                    .confirmationDialog("", isPresented: $confirmationShown) {
+                        Button("Confirm", role: .destructive) {
+                        }
+                        Button("Cancel", role: .cancel) {
+                        }
+                    } message: {
+                        Text("This isn't implemeted just yet, Please delete from main page by swaping left")
+                    }
+                    .frame(maxWidth: .infinity)
             }
         }
     }
