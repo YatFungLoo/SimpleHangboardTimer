@@ -15,7 +15,7 @@ struct ThemeView: View {
             .padding(4)
             .foregroundColor(theme.accentColor)
             .background(theme.mainColor)
-            .cornerRadius(4)
+            .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
     }
 }
 

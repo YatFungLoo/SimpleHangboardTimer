@@ -61,7 +61,7 @@ struct ExerciseDetailView: View {
                         .padding(4)
                         .foregroundColor(exercise.theme.accentColor)
                         .background(exercise.theme.mainColor)
-                        .cornerRadius(4)
+                        .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
                 }
             }
         }
