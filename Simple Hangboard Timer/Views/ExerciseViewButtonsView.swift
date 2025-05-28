@@ -12,40 +12,48 @@ struct ExerciseViewButtonsView: View {
     @State private var confirmationShown = false
     
     let startExercise: () -> Void
+    
+    func resumePause() -> String {
+        return exerciseTimer.timerStopped ? "Resume" : "Pause"
+    }
 
     var body: some View {
-        VStack {
-            HStack {
-                Button("Previous") {
-                    exerciseTimer.previousExercise()
-                }
-                Button("Resume/Pause") {
-                    exerciseTimer.resumePauseExercise()
-                }
-                Button("Skip") {
-                    exerciseTimer.skipExercise()
-                }
+        HStack {
+            Button("Previous") {
+                exerciseTimer.previousExercise()
             }
-            HStack {
-                Button("Restart") {
-                    exerciseTimer.pauseExercise()
-                    confirmationShown = true
-                }.confirmationDialog("This is a test", isPresented: $confirmationShown) {
-                    Button("Restart", role: .destructive) {
-                        exerciseTimer.reset()
-                        startExercise()
-                    }
-                    Button("Cancel", role: .cancel) {
-                        exerciseTimer.resumeExercise()
-                    }
-                } message: {
-                    Text("This cannot ;_;")
-                }
+            .buttonStyle(.controlButton)
+            Spacer()
+            Button(resumePause()) {
+                exerciseTimer.resumePauseExercise()
             }
+            .buttonStyle(.controlButton)
+            Spacer()
+            Button("Skip") {
+                exerciseTimer.skipExercise()
+            }
+            .buttonStyle(.controlButton)
         }
+        Button("Restart") {
+            exerciseTimer.pauseExercise()
+            confirmationShown = true
+        }
+        .confirmationDialog("This is a test", isPresented: $confirmationShown) {
+            Button("Restart", role: .destructive) {
+                exerciseTimer.reset()
+                startExercise()
+            }
+            Button("Cancel", role: .cancel) {
+                exerciseTimer.resumeExercise()
+            }
+        } message: {
+            Text("This cannot ;_;")
+        }
+        
     }
 }
 
-//#Preview {
-//    ExerciseViewButtonsView()
-//}
+#Preview {
+    let exerciseTimer = ExerciseTimer()
+    ExerciseViewButtonsView(exerciseTimer: exerciseTimer, startExercise: {})
+}
