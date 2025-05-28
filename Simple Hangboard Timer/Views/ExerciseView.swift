@@ -30,12 +30,8 @@ struct ExerciseView: View {
             Spacer()
             if exerciseTimer.isReady { // not ready
                 ExerciseViewTimerView(exerciseTimer: exerciseTimer, theme: $exercise.theme)
-            } else {
-                Text("\(exerciseTimer.secondsRemaining)")
-                    .padding(4)
-                    .foregroundColor(.white)
-                    .background(Color.accentColor)
-                    .cornerRadius(4)
+            } else { // ready state
+                ExerciseViewReadyView(exerciseTimer: exerciseTimer)
             }
             Spacer()
             ExerciseViewButtonsView(exerciseTimer: exerciseTimer, startExercise: startExercise)

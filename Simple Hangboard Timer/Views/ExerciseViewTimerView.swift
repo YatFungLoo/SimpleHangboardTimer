@@ -38,6 +38,7 @@ struct ExerciseViewTimerView: View {
     }
 }
 
-//#Preview {
-//    ExerciseViewTimerView()
-//}
+#Preview {
+let exerciseTimer = ExerciseTimer()
+    ExerciseViewTimerView(exerciseTimer: exerciseTimer, theme: .constant(.bubblegum))
+}
