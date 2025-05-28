@@ -12,11 +12,15 @@ struct ExerciseViewReadyView: View {
     
     var body: some View {
         Text("Ready")
+            .frame(maxWidth: .infinity)
             .padding(4)
+            .font(.largeTitle)
             .background(.gray)
             .cornerRadius(4)
         Text("\(exerciseTimer.secondsRemaining)")
+            .frame(maxWidth: .infinity)
             .padding(4)
+            .font(.largeTitle)
             .background(.gray)
             .cornerRadius(4)
     }

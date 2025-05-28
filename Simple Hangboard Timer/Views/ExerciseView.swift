@@ -28,9 +28,9 @@ struct ExerciseView: View {
                 .progressViewStyle(DefaultProgressViewStyle())
                 .tint(exercise.theme.mainColor)
             Spacer()
-            if exerciseTimer.isReady { // not ready
+            if exerciseTimer.isReady { // show exercise timer
                 ExerciseViewTimerView(exerciseTimer: exerciseTimer, theme: $exercise.theme)
-            } else { // ready state
+            } else { // show ready state
                 ExerciseViewReadyView(exerciseTimer: exerciseTimer)
             }
             Spacer()
