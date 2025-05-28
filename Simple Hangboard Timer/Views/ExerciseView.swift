@@ -28,7 +28,15 @@ struct ExerciseView: View {
                 .progressViewStyle(DefaultProgressViewStyle())
                 .tint(exercise.theme.mainColor)
             Spacer()
-            ExerciseViewTimerView(exerciseTimer: exerciseTimer)
+            if exerciseTimer.isReady { // not ready
+                ExerciseViewTimerView(exerciseTimer: exerciseTimer, theme: $exercise.theme)
+            } else {
+                Text("\(exerciseTimer.secondsRemaining)")
+                    .padding(4)
+                    .foregroundColor(.white)
+                    .background(Color.accentColor)
+                    .cornerRadius(4)
+            }
             Spacer()
             ExerciseViewButtonsView(exerciseTimer: exerciseTimer, startExercise: startExercise)
         }

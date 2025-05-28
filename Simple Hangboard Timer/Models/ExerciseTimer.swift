@@ -17,6 +17,7 @@ final class ExerciseTimer: ObservableObject {
     @Published var currentExecDuration = 0
     @Published var currentExecIndex = 0
     @Published var timerStopped = false
+    @Published var isReady = false
 
     private var execs: [UniqueExec] = []
     private var currExecElaspedSeconds: Int = 0 // keep track total seconds elasped
@@ -24,7 +25,6 @@ final class ExerciseTimer: ObservableObject {
     var execChangedAction: (() -> Void)?
     private weak var timer: Timer?
     
-    private var isReady = false
     private var frequency: TimeInterval { 1.0 / 60.0 } // 60fps
     private var secondsElapsedForExec: Int = 0
     private var deltaSeconds: Int = 0 // store difference for update()
@@ -48,8 +48,8 @@ final class ExerciseTimer: ObservableObject {
         currentExecDuration = 0
         currentExecIndex = 0
         timerStopped = false
-        currExecElaspedSeconds = 0
         isReady = false
+        currExecElaspedSeconds = 0
         secondsElapsedForExec = 0
         execIndex = 0
     }
@@ -57,6 +57,7 @@ final class ExerciseTimer: ObservableObject {
     func startExercise() {
         timer?.invalidate()
         timerStopped = false
+        isReady = true
         timer = Timer.scheduledTimer(withTimeInterval: frequency, repeats: true)
         {
             [weak self] timer in
