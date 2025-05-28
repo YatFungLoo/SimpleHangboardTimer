@@ -34,6 +34,7 @@ struct ExerciseViewButtonsView: View {
             }
             .buttonStyle(.controlButton)
         }
+        .padding(.horizontal, 20)
         Button("Restart") {
             exerciseTimer.pauseExercise()
             confirmationShown = true

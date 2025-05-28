@@ -16,8 +16,8 @@ struct ExerciseControlButtonStyle: ButtonStyle {
             .foregroundStyle(.white)
             .background(Color.accentColor)
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .scaleEffect(configuration.isPressed ? 0.9 : 1)
-            .animation(.smooth, value: configuration.isPressed)
+            .scaleEffect(configuration.isPressed ? 0.1 : 1)
+            .animation(.bouncy, value: configuration.isPressed)
     }
 }
 
