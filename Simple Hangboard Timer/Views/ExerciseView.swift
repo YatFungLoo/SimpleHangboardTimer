@@ -11,10 +11,10 @@ struct ExerciseView: View {
     @Binding var exercise: Exercise
     @StateObject var exerciseTimer = ExerciseTimer()
     
-    func startExercise () {
+    func startExercise() {
         let compilation: [UniqueExec] = exercise.tasksCompilation()
         exerciseTimer.setup(execs: compilation)
-        exerciseTimer.startExercise()
+        exerciseTimer.readyExercise()
     }
     
     private var progress: Double {
@@ -25,10 +25,16 @@ struct ExerciseView: View {
     var body: some View {
         VStack {
             ProgressView(value: progress)
+                .progressViewStyle(DefaultProgressViewStyle())
+                .tint(exercise.theme.mainColor)
             Spacer()
-            Text("\(exerciseTimer.activeExecName): \(exerciseTimer.secondsRemaining) / \(exerciseTimer.currentExecDuration)")
+            if exerciseTimer.isReady { // show exercise timer
+                ExerciseViewTimerView(exerciseTimer: exerciseTimer, theme: $exercise.theme)
+            } else { // show ready state
+                ExerciseViewReadyView(exerciseTimer: exerciseTimer)
+            }
             Spacer()
-            Text("\(exerciseTimer.totalSecondsElasped) of \(exerciseTimer.totalSecondsRemaining) where total = \(exerciseTimer.totalSeconds)")
+            ExerciseViewButtonsView(exerciseTimer: exerciseTimer, startExercise: startExercise)
         }
         .onAppear {
             startExercise()
@@ -38,6 +44,6 @@ struct ExerciseView: View {
 
 struct ExerciseView_Preview: PreviewProvider {
     static var previews: some View {
-        ExerciseView(exercise: .constant(Exercise.sampleData[1]))
+        ExerciseView(exercise: .constant(Exercise.sampleData[0]))
     }
 }
