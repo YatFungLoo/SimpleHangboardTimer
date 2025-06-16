@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ActivityKit
 
 struct Exercise: Identifiable, Codable {
     let id: UUID
